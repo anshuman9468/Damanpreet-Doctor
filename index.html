@@ -1,0 +1,1804 @@
+<!doctype html>
+<html lang="en" class="h-full">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dr. BrainLy | Psychology &amp; Mental Wellness</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- SDKs removed as they are not available -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@300;400;500;600&amp;family=Inter:wght@300;400;500;600&amp;display=swap"
+        rel="stylesheet">
+    <style>
+        body {
+            box-sizing: border-box;
+        }
+
+        :root {
+            --color-background: #F8FAFB;
+            --color-surface: #FFFFFF;
+            --color-text: #2D3748;
+            --color-primary: #6B9080;
+            --color-secondary: #A4C3B2;
+        }
+
+        * {
+            scroll-behavior: smooth;
+        }
+
+        .font-display {
+            font-family: 'Crimson Pro', Georgia, serif;
+        }
+
+        .font-body {
+            font-family: 'Inter', system-ui, sans-serif;
+        }
+
+        .gradient-hero {
+            background: linear-gradient(135deg, #F5F9F7 0%, #EAF4F0 50%, #F8FAFB 100%);
+        }
+
+        .gradient-accent {
+            background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
+        }
+
+        .card-shadow {
+            box-shadow: 0 2px 16px rgba(107, 144, 128, 0.08);
+        }
+
+        .card-hover {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card-hover:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(107, 144, 128, 0.12);
+        }
+
+        .fade-in {
+            animation: fadeIn 0.6s ease-out forwards;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .stagger-1 {
+            animation-delay: 0.1s;
+        }
+
+        .stagger-2 {
+            animation-delay: 0.2s;
+        }
+
+        .stagger-3 {
+            animation-delay: 0.3s;
+        }
+
+        .stagger-4 {
+            animation-delay: 0.4s;
+        }
+
+        .blob {
+            border-radius: 42% 58% 70% 30% / 45% 45% 55% 55%;
+            animation: blobMorph 8s ease-in-out infinite;
+        }
+
+        @keyframes blobMorph {
+
+            0%,
+            100% {
+                border-radius: 42% 58% 70% 30% / 45% 45% 55% 55%;
+            }
+
+            50% {
+                border-radius: 58% 42% 30% 70% / 55% 55% 45% 45%;
+            }
+        }
+
+        .calendar-day {
+            transition: all 0.2s ease;
+        }
+
+        .calendar-day:not(.disabled):hover {
+            background: var(--color-primary);
+            color: white;
+        }
+
+        .time-slot {
+            transition: all 0.2s ease;
+        }
+
+        .time-slot:not(.booked):hover {
+            background: var(--color-primary);
+            color: white;
+            border-color: var(--color-primary);
+        }
+
+        .modal-backdrop {
+            background: rgba(45, 55, 72, 0.6);
+            backdrop-filter: blur(4px);
+        }
+
+        .toast {
+            animation: slideIn 0.3s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        input:focus,
+        textarea:focus,
+        select:focus {
+            outline: none;
+            border-color: var(--color-primary);
+            box-shadow: 0 0 0 3px rgba(107, 144, 128, 0.15);
+        }
+
+        .nav-link {
+            position: relative;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--color-primary);
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .page-section {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow-y: auto;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .page-section.active {
+            opacity: 1;
+            pointer-events: auto;
+            z-index: 1;
+        }
+
+        .chat-message {
+            animation: messageSlideIn 0.3s ease-out;
+        }
+
+        @keyframes messageSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .typing-indicator span {
+            animation: typingDot 1.4s infinite;
+        }
+
+        .typing-indicator span:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .typing-indicator span:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes typingDot {
+
+            0%,
+            60%,
+            100% {
+                opacity: 0.3;
+            }
+
+            30% {
+                opacity: 1;
+            }
+        }
+
+        #chat-window {
+            max-height: calc(100% - 100px);
+        }
+
+        @media (max-width: 640px) {
+            #chat-window {
+                width: calc(100vw - 2rem);
+                right: 1rem;
+                height: calc(100% - 120px);
+            }
+        }
+
+        .timeline-dot {
+            position: relative;
+        }
+
+        .timeline-dot::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 100%;
+            width: 2px;
+            height: 40px;
+            background: var(--color-secondary);
+            transform: translateX(-50%);
+        }
+
+        .timeline-dot:last-child::before {
+            display: none;
+        }
+    </style>
+    <style>
+        @view-transition {
+            navigation: auto;
+        }
+    </style>
+</head>
+
+<body class="h-full font-body" style="background-color: var(--color-background); color: var(--color-text);">
+    <!-- Loading Screen -->
+    <div id="loading-screen" class="fixed inset-0 z-[100] flex items-center justify-center gradient-hero">
+        <div class="text-center">
+            <div class="mb-8">
+                <h1 id="loading-title" class="font-display text-5xl md:text-6xl font-bold mb-6"
+                    style="color: var(--color-primary);"><span id="loading-letters"></span> <span id="loading-cursor"
+                        class="animate-pulse">|</span></h1>
+                <p class="text-lg md:text-xl font-light opacity-80 italic" style="color: var(--color-text);">"A safe
+                    space for your mind to breathe."</p>
+            </div>
+            <div class="max-w-md mx-auto px-6">
+                <div class="h-1.5 bg-gray-200 rounded-full overflow-hidden">
+                    <div id="loading-progress" class="h-full gradient-accent rounded-full transition-all duration-300"
+                        style="width: 0%"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="app" class="h-full w-full overflow-hidden"><!-- Navigation -->
+        <nav id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300"
+            style="background: rgba(248, 250, 251, 0.95); backdrop-filter: blur(10px);">
+            <div class="max-w-6xl mx-auto px-6 py-4">
+                <div class="flex items-center justify-between"><button onclick="showSection('hero')"
+                        class="flex items-center gap-3 hover:opacity-80 transition-opacity">
+                        <div class="w-10 h-10 rounded-xl gradient-accent flex items-center justify-center">
+                            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                            </svg>
+                        </div><span id="nav-brand" class="font-display text-xl font-semibold"
+                            style="color: var(--color-primary);">Dr. BrainLy</span>
+                    </button>
+                    <div class="hidden md:flex items-center gap-8"><button onclick="showSection('about')"
+                            class="nav-link font-medium text-sm tracking-wide hover:text-[#6B9080] transition-colors">About</button>
+                        <button onclick="showSection('qualifications')"
+                            class="nav-link font-medium text-sm tracking-wide hover:text-[#6B9080] transition-colors">Qualifications</button>
+                        <button onclick="showSection('experience')"
+                            class="nav-link font-medium text-sm tracking-wide hover:text-[#6B9080] transition-colors">Experience</button>
+                        <button onclick="showSection('services')"
+                            class="nav-link font-medium text-sm tracking-wide hover:text-[#6B9080] transition-colors">Services</button>
+                        <button onclick="showSection('booking')"
+                            class="px-5 py-2.5 rounded-full text-white text-sm font-semibold gradient-accent hover:opacity-90 transition-opacity">
+                            Book Session </button>
+                    </div><button id="mobile-menu-btn"
+                        class="md:hidden p-2 rounded-lg hover:bg-gray-100 transition-colors">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M4 6h16M4 12h16M4 18h16" />
+                        </svg></button>
+                </div><!-- Mobile Menu -->
+                <div id="mobile-menu" class="hidden md:hidden mt-4 pb-4 border-t border-gray-100 pt-4">
+                    <div class="flex flex-col gap-4"><button onclick="showSection('about'); toggleMobileMenu();"
+                            class="font-medium text-sm hover:text-[#6B9080] transition-colors text-left">About</button>
+                        <button onclick="showSection('qualifications'); toggleMobileMenu();"
+                            class="font-medium text-sm hover:text-[#6B9080] transition-colors text-left">Qualifications</button>
+                        <button onclick="showSection('experience'); toggleMobileMenu();"
+                            class="font-medium text-sm hover:text-[#6B9080] transition-colors text-left">Experience</button>
+                        <button onclick="showSection('services'); toggleMobileMenu();"
+                            class="font-medium text-sm hover:text-[#6B9080] transition-colors text-left">Services</button>
+                        <button onclick="showSection('booking'); toggleMobileMenu();"
+                            class="px-5 py-2.5 rounded-full text-white text-sm font-semibold gradient-accent text-center">
+                            Book Session </button>
+                    </div>
+                </div>
+            </div>
+        </nav><!-- Hero Section -->
+        <section id="section-hero" class="page-section active gradient-hero">
+            <div class="absolute top-20 right-0 w-96 h-96 blob opacity-20" style="background: var(--color-secondary);">
+            </div>
+            <div class="absolute bottom-20 left-10 w-64 h-64 blob opacity-15"
+                style="background: var(--color-primary); animation-delay: -4s;"></div>
+            <div class="max-w-6xl mx-auto px-6 py-32 relative z-10 min-h-full flex items-center">
+                <div class="grid lg:grid-cols-2 gap-12 items-center w-full">
+                    <div class="fade-in">
+                        <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6"
+                            style="background: rgba(107, 144, 128, 0.1);"><span class="w-2 h-2 rounded-full"
+                                style="background: var(--color-primary);"></span> <span id="hero-brand"
+                                class="text-sm font-medium" style="color: var(--color-primary);">Dr. BrainLy</span>
+                        </div>
+                        <h1 id="hero-name"
+                            class="font-display text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-4">Dr.
+                            Babanpreet Kaur</h1>
+                        <p id="hero-title" class="text-xl md:text-2xl font-light mb-6"
+                            style="color: var(--color-secondary);">Psychologist | Mental Health Support</p>
+                        <p class="text-lg leading-relaxed mb-8 max-w-lg opacity-80">Providing compassionate emotional
+                            support in a safe, non-judgmental space. Together, we can navigate life's challenges with
+                            understanding and care.</p>
+                        <div class="flex flex-wrap gap-4"><button onclick="showSection('booking')"
+                                class="px-8 py-4 rounded-full text-white font-semibold gradient-accent hover:opacity-90 transition-all shadow-lg hover:shadow-xl">
+                                Book a Session </button> <button onclick="showSection('about')"
+                                class="px-8 py-4 rounded-full font-semibold border-2 hover:bg-white transition-colors"
+                                style="border-color: var(--color-primary); color: var(--color-primary);"> Learn More
+                            </button>
+                        </div>
+                    </div>
+                    <div class="fade-in stagger-2 flex justify-center lg:justify-end">
+                        <div class="relative">
+                            <div class="w-72 h-72 md:w-96 md:h-96 overflow-hidden card-shadow"
+                                style="background: var(--color-surface); border-radius: 50px;">
+                                <img src="doctor_image.png" alt="Dr. Babanpreet Kaur"
+                                    class="w-full h-full object-cover">
+                            </div>
+                            <div class="absolute -bottom-4 -left-4 px-6 py-3 rounded-2xl card-shadow"
+                                style="background: var(--color-surface);">
+                                <div class="flex items-center gap-3">
+                                    <div
+                                        class="w-12 h-12 rounded-full gradient-accent flex items-center justify-center">
+                                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor"
+                                            viewbox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <p id="hero-years" class="text-sm font-semibold">Dedicated</p>
+                                        <p class="text-xs opacity-70">Support</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section><!-- About Section -->
+        <section id="section-about" class="page-section" style="background: var(--color-surface);">
+            <div class="min-h-full py-24 pt-32">
+                <div class="max-w-4xl mx-auto px-6">
+                    <div class="text-center mb-16 fade-in"><span
+                            class="inline-block px-4 py-1.5 rounded-full text-sm font-medium mb-4"
+                            style="background: rgba(107, 144, 128, 0.1); color: var(--color-primary);"> Get to Know Me
+                        </span>
+                        <h2 id="about-heading" class="font-display text-3xl md:text-4xl font-bold mb-6">About Me</h2>
+                    </div>
+                    <div class="max-w-3xl mx-auto fade-in stagger-1">
+                        <div class="prose prose-lg max-w-none">
+                            <p class="text-lg leading-relaxed mb-6 opacity-90">I'm Dr. Babanpreet Kaur, a psychologist
+                                dedicated to providing compassionate emotional support and guidance. I believe that
+                                everyone deserves a space where they can express themselves freely, without fear of
+                                judgment or criticism.</p>
+                            <p class="text-lg leading-relaxed mb-6 opacity-90">My approach is rooted in empathy and
+                                active listening. I work alongside you to help understand your thoughts, emotions, and
+                                experiences. Whether you're facing stress, navigating difficult relationships, or simply
+                                seeking clarity in your life, I'm here to walk with you through it.</p>
+                            <p class="text-lg leading-relaxed mb-8 opacity-90">I balance emotional sensitivity with
+                                practical guidance, creating a safe and comfortable environment where you can explore
+                                your feelings and work toward emotional well-being. Every person is unique, and I tailor
+                                my support to meet your individual needs.</p>
+                            <div class="grid md:grid-cols-3 gap-6 mt-12">
+                                <div class="text-center p-6 rounded-2xl card-shadow card-hover"
+                                    style="background: var(--color-background);">
+                                    <div class="w-14 h-14 rounded-full mx-auto mb-4 flex items-center justify-center"
+                                        style="background: rgba(107, 144, 128, 0.1);">
+                                        <svg class="w-7 h-7" style="color: var(--color-primary);" fill="none"
+                                            stroke="currentColor" viewbox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                                        </svg>
+                                    </div>
+                                    <h3 class="font-display text-lg font-semibold mb-2">Empathetic Listening</h3>
+                                    <p class="text-sm opacity-70">Understanding without judgment</p>
+                                </div>
+                                <div class="text-center p-6 rounded-2xl card-shadow card-hover"
+                                    style="background: var(--color-background);">
+                                    <div class="w-14 h-14 rounded-full mx-auto mb-4 flex items-center justify-center"
+                                        style="background: rgba(107, 144, 128, 0.1);">
+                                        <svg class="w-7 h-7" style="color: var(--color-primary);" fill="none"
+                                            stroke="currentColor" viewbox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                                        </svg>
+                                    </div>
+                                    <h3 class="font-display text-lg font-semibold mb-2">Safe Space</h3>
+                                    <p class="text-sm opacity-70">Confidential &amp; comfortable</p>
+                                </div>
+                                <div class="text-center p-6 rounded-2xl card-shadow card-hover"
+                                    style="background: var(--color-background);">
+                                    <div class="w-14 h-14 rounded-full mx-auto mb-4 flex items-center justify-center"
+                                        style="background: rgba(107, 144, 128, 0.1);">
+                                        <svg class="w-7 h-7" style="color: var(--color-primary);" fill="none"
+                                            stroke="currentColor" viewbox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                                        </svg>
+                                    </div>
+                                    <h3 class="font-display text-lg font-semibold mb-2">Client-Centered</h3>
+                                    <p class="text-sm opacity-70">Tailored to your needs</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section><!-- Qualifications Section -->
+        <section id="section-qualifications" class="page-section" style="background: var(--color-background);">
+            <div class="min-h-full py-24 pt-32">
+                <div class="max-w-6xl mx-auto px-6">
+                    <div class="text-center mb-16 fade-in"><span
+                            class="inline-block px-4 py-1.5 rounded-full text-sm font-medium mb-4"
+                            style="background: rgba(107, 144, 128, 0.1); color: var(--color-primary);"> Educational
+                            Background </span>
+                        <h2 class="font-display text-3xl md:text-4xl font-bold">Qualifications</h2>
+                    </div>
+                    <div class="max-w-4xl mx-auto space-y-8"><!-- MSc Psychology -->
+                        <div class="fade-in stagger-1">
+                            <div class="p-8 rounded-3xl card-shadow card-hover"
+                                style="background: var(--color-surface);">
+                                <div class="flex items-start gap-6">
+                                    <div class="flex-shrink-0">
+                                        <div
+                                            class="w-16 h-16 rounded-2xl gradient-accent flex items-center justify-center">
+                                            <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor"
+                                                viewbox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M12 14l9-5-9-5-9 5 9 5z" />
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z" />
+                                            </svg>
+                                        </div>
+                                    </div>
+                                    <div class="flex-1">
+                                        <div class="flex items-start justify-between mb-3">
+                                            <div>
+                                                <h3 class="font-display text-2xl font-semibold mb-1">MSc in Psychology
+                                                </h3>
+                                                <p class="text-sm opacity-70">2021 – 2023</p>
+                                            </div><span class="px-4 py-1.5 rounded-full text-sm font-medium"
+                                                style="background: rgba(107, 144, 128, 0.1); color: var(--color-primary);">
+                                                GPA: 8.55 </span>
+                                        </div>
+                                        <div class="space-y-4 mt-4">
+                                            <div class="pl-4 border-l-2" style="border-color: var(--color-secondary);">
+                                                <p class="text-sm font-medium mb-1 opacity-70">Dissertation:</p>
+                                                <p class="text-base">Association between attachment styles and
+                                                    relationship satisfaction in long-distance vs close-contact
+                                                    relationships</p>
+                                            </div>
+                                            <div class="pl-4 border-l-2" style="border-color: var(--color-secondary);">
+                                                <p class="text-sm font-medium mb-1 opacity-70">Review Paper:</p>
+                                                <p class="text-base">PCOS and Body Dysmorphic Disorder as predictors of
+                                                    stress</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div><!-- BA Psychology -->
+                        <div class="fade-in stagger-2">
+                            <div class="p-8 rounded-3xl card-shadow card-hover"
+                                style="background: var(--color-surface);">
+                                <div class="flex items-start gap-6">
+                                    <div class="flex-shrink-0">
+                                        <div
+                                            class="w-16 h-16 rounded-2xl gradient-accent flex items-center justify-center">
+                                            <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor"
+                                                viewbox="0 0 24 24">
+                                                <path d="M12 14l9-5-9-5-9 5 9 5z" />
+                                                <path
+                                                    d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z" />
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5l4-2.222" />
+                                            </svg>
+                                        </div>
+                                    </div>
+                                    <div class="flex-1">
+                                        <div class="flex items-start justify-between mb-3">
+                                            <div>
+                                                <h3 class="font-display text-2xl font-semibold mb-1">BA Psychology
+                                                    (Honours)</h3>
+                                                <p class="text-sm opacity-70">2018 – 2021</p>
+                                            </div><span class="px-4 py-1.5 rounded-full text-sm font-medium"
+                                                style="background: rgba(107, 144, 128, 0.1); color: var(--color-primary);">
+                                                GPA: 7.28 </span>
+                                        </div>
+                                        <div class="space-y-4 mt-4">
+                                            <div class="pl-4 border-l-2" style="border-color: var(--color-secondary);">
+                                                <p class="text-sm font-medium mb-1 opacity-70">Dissertation:</p>
+                                                <p class="text-base">Graphology as a measure to predict depression,
+                                                    anxiety, and stress</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section><!-- Experience Section -->
+        <section id="section-experience" class="page-section" style="background: var(--color-surface);">
+            <div class="min-h-full py-24 pt-32">
+                <div class="max-w-6xl mx-auto px-6">
+                    <div class="text-center mb-16 fade-in"><span
+                            class="inline-block px-4 py-1.5 rounded-full text-sm font-medium mb-4"
+                            style="background: rgba(107, 144, 128, 0.1); color: var(--color-primary);"> Professional
+                            Journey </span>
+                        <h2 class="font-display text-3xl md:text-4xl font-bold">Experience</h2>
+                    </div>
+                    <div class="max-w-4xl mx-auto">
+                        <div class="space-y-12"><!-- Psychologist / Case Manager -->
+                            <div class="fade-in stagger-1">
+                                <div class="p-8 rounded-3xl card-shadow" style="background: var(--color-background);">
+                                    <div class="flex items-start gap-6">
+                                        <div class="flex-shrink-0 timeline-dot">
+                                            <div
+                                                class="w-14 h-14 rounded-xl gradient-accent flex items-center justify-center">
+                                                <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor"
+                                                    viewbox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        stroke-width="2"
+                                                        d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                                                </svg>
+                                            </div>
+                                        </div>
+                                        <div class="flex-1">
+                                            <h3 class="font-display text-2xl font-semibold mb-3">Psychologist / Case
+                                                Manager</h3>
+                                            <div class="space-y-4">
+                                                <div>
+                                                    <p class="text-sm font-medium mb-2 opacity-70">Individual &amp;
+                                                        Group Support:</p>
+                                                    <p class="text-base opacity-90">Conducted individual and group
+                                                        counselling sessions, providing emotional support and guidance
+                                                        to individuals facing various mental health concerns.</p>
+                                                </div>
+                                                <div>
+                                                    <p class="text-sm font-medium mb-2 opacity-70">Therapeutic
+                                                        Approaches:</p>
+                                                    <ul class="grid md:grid-cols-2 gap-2 text-base opacity-90">
+                                                        <li class="flex items-center gap-2"><span
+                                                                class="w-1.5 h-1.5 rounded-full"
+                                                                style="background: var(--color-primary);"></span>
+                                                            Cognitive Behavioural Therapy (CBT)</li>
+                                                        <li class="flex items-center gap-2"><span
+                                                                class="w-1.5 h-1.5 rounded-full"
+                                                                style="background: var(--color-primary);"></span>
+                                                            Supportive Therapy</li>
+                                                        <li class="flex items-center gap-2"><span
+                                                                class="w-1.5 h-1.5 rounded-full"
+                                                                style="background: var(--color-primary);"></span> Family
+                                                            Therapy</li>
+                                                        <li class="flex items-center gap-2"><span
+                                                                class="w-1.5 h-1.5 rounded-full"
+                                                                style="background: var(--color-primary);"></span> Crisis
+                                                            Intervention</li>
+                                                        <li class="flex items-center gap-2"><span
+                                                                class="w-1.5 h-1.5 rounded-full"
+                                                                style="background: var(--color-primary);"></span>
+                                                            Behaviour Modification</li>
+                                                    </ul>
+                                                </div>
+                                                <div>
+                                                    <p class="text-sm font-medium mb-2 opacity-70">Assessment &amp;
+                                                        Education:</p>
+                                                    <p class="text-base opacity-90">Conducted assessments, mental status
+                                                        examinations, and psycho-education sessions for individuals and
+                                                        families.</p>
+                                                </div>
+                                                <div>
+                                                    <p class="text-sm font-medium mb-2 opacity-70">Collaborative Care:
+                                                    </p>
+                                                    <p class="text-base opacity-90">Worked closely with
+                                                        multidisciplinary teams to provide holistic support and
+                                                        facilitate emotional skill-building sessions.</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div><!-- Trainee & Counselling Psychologist -->
+                            <div class="fade-in stagger-2">
+                                <div class="p-8 rounded-3xl card-shadow" style="background: var(--color-background);">
+                                    <div class="flex items-start gap-6">
+                                        <div class="flex-shrink-0">
+                                            <div
+                                                class="w-14 h-14 rounded-xl gradient-accent flex items-center justify-center">
+                                                <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor"
+                                                    viewbox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        stroke-width="2"
+                                                        d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                                                </svg>
+                                            </div>
+                                        </div>
+                                        <div class="flex-1">
+                                            <h3 class="font-display text-2xl font-semibold mb-3">Trainee &amp;
+                                                Counselling Psychologist</h3>
+                                            <div class="space-y-4">
+                                                <div>
+                                                    <p class="text-sm font-medium mb-2 opacity-70">Supervised Sessions:
+                                                    </p>
+                                                    <p class="text-base opacity-90">Provided supportive individual
+                                                        sessions under professional supervision, focusing on building
+                                                        rapport and understanding client needs.</p>
+                                                </div>
+                                                <div>
+                                                    <p class="text-sm font-medium mb-2 opacity-70">Group Therapy &amp;
+                                                        Family Support:</p>
+                                                    <p class="text-base opacity-90">Conducted group therapy sessions and
+                                                        psycho-education programs for families, helping them understand
+                                                        and support their loved ones.</p>
+                                                </div>
+                                                <div>
+                                                    <p class="text-sm font-medium mb-2 opacity-70">Assessment Support:
+                                                    </p>
+                                                    <p class="text-base opacity-90">Assisted in conducting assessments
+                                                        and maintaining detailed documentation for continuity of care.
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section><!-- Services Section -->
+        <section id="section-services" class="page-section" style="background: var(--color-background);">
+            <div class="min-h-full py-24 pt-32">
+                <div class="max-w-6xl mx-auto px-6">
+                    <div class="text-center mb-16 fade-in"><span
+                            class="inline-block px-4 py-1.5 rounded-full text-sm font-medium mb-4"
+                            style="background: rgba(107, 144, 128, 0.1); color: var(--color-primary);"> How I Can Help
+                        </span>
+                        <h2 class="font-display text-3xl md:text-4xl font-bold mb-6">Areas of Support</h2>
+                        <p class="text-lg opacity-70 max-w-2xl mx-auto">Providing compassionate emotional support for a
+                            range of mental health concerns</p>
+                    </div>
+                    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto">
+                        <div class="fade-in stagger-1">
+                            <div class="p-6 rounded-2xl h-full card-shadow card-hover"
+                                style="background: var(--color-surface);">
+                                <div class="w-14 h-14 rounded-xl mb-4 flex items-center justify-center"
+                                    style="background: rgba(107, 144, 128, 0.1);">
+                                    <svg class="w-7 h-7" style="color: var(--color-primary);" fill="none"
+                                        stroke="currentColor" viewbox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+                                    </svg>
+                                </div>
+                                <h3 class="font-display text-lg font-semibold mb-2">Stress &amp; Overwhelm</h3>
+                                <p class="text-sm opacity-70">Support for managing daily stress and emotional overwhelm
+                                </p>
+                            </div>
+                        </div>
+                        <div class="fade-in stagger-2">
+                            <div class="p-6 rounded-2xl h-full card-shadow card-hover"
+                                style="background: var(--color-surface);">
+                                <div class="w-14 h-14 rounded-xl mb-4 flex items-center justify-center"
+                                    style="background: rgba(107, 144, 128, 0.1);">
+                                    <svg class="w-7 h-7" style="color: var(--color-primary);" fill="none"
+                                        stroke="currentColor" viewbox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                                    </svg>
+                                </div>
+                                <h3 class="font-display text-lg font-semibold mb-2">Anxiety Support</h3>
+                                <p class="text-sm opacity-70">Help with anxiety-related concerns and worries</p>
+                            </div>
+                        </div>
+                        <div class="fade-in stagger-3">
+                            <div class="p-6 rounded-2xl h-full card-shadow card-hover"
+                                style="background: var(--color-surface);">
+                                <div class="w-14 h-14 rounded-xl mb-4 flex items-center justify-center"
+                                    style="background: rgba(107, 144, 128, 0.1);">
+                                    <svg class="w-7 h-7" style="color: var(--color-primary);" fill="none"
+                                        stroke="currentColor" viewbox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                                    </svg>
+                                </div>
+                                <h3 class="font-display text-lg font-semibold mb-2">Emotional Well-being</h3>
+                                <p class="text-sm opacity-70">Support for low mood and emotional challenges
+                                    (non-diagnostic)</p>
+                            </div>
+                        </div>
+                        <div class="fade-in stagger-4">
+                            <div class="p-6 rounded-2xl h-full card-shadow card-hover"
+                                style="background: var(--color-surface);">
+                                <div class="w-14 h-14 rounded-xl mb-4 flex items-center justify-center"
+                                    style="background: rgba(107, 144, 128, 0.1);">
+                                    <svg class="w-7 h-7" style="color: var(--color-primary);" fill="none"
+                                        stroke="currentColor" viewbox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                                    </svg>
+                                </div>
+                                <h3 class="font-display text-lg font-semibold mb-2">Relationship Issues</h3>
+                                <p class="text-sm opacity-70">Guidance for relationship and attachment challenges</p>
+                            </div>
+                        </div>
+                        <div class="fade-in stagger-1">
+                            <div class="p-6 rounded-2xl h-full card-shadow card-hover"
+                                style="background: var(--color-surface);">
+                                <div class="w-14 h-14 rounded-xl mb-4 flex items-center justify-center"
+                                    style="background: rgba(107, 144, 128, 0.1);">
+                                    <svg class="w-7 h-7" style="color: var(--color-primary);" fill="none"
+                                        stroke="currentColor" viewbox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                                    </svg>
+                                </div>
+                                <h3 class="font-display text-lg font-semibold mb-2">Sleep &amp; Balance</h3>
+                                <p class="text-sm opacity-70">Support for sleep disturbances and lifestyle balance</p>
+                            </div>
+                        </div>
+                        <div class="fade-in stagger-2">
+                            <div class="p-6 rounded-2xl h-full card-shadow card-hover"
+                                style="background: var(--color-surface);">
+                                <div class="w-14 h-14 rounded-xl mb-4 flex items-center justify-center"
+                                    style="background: rgba(107, 144, 128, 0.1);">
+                                    <svg class="w-7 h-7" style="color: var(--color-primary);" fill="none"
+                                        stroke="currentColor" viewbox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M13 10V3L4 14h7v7l9-11h-7z" />
+                                    </svg>
+                                </div>
+                                <h3 class="font-display text-lg font-semibold mb-2">Crisis Support</h3>
+                                <p class="text-sm opacity-70">Immediate emotional support during difficult times</p>
+                            </div>
+                        </div>
+                        <div class="fade-in stagger-3">
+                            <div class="p-6 rounded-2xl h-full card-shadow card-hover"
+                                style="background: var(--color-surface);">
+                                <div class="w-14 h-14 rounded-xl mb-4 flex items-center justify-center"
+                                    style="background: rgba(107, 144, 128, 0.1);">
+                                    <svg class="w-7 h-7" style="color: var(--color-primary);" fill="none"
+                                        stroke="currentColor" viewbox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
+                                </div>
+                                <h3 class="font-display text-lg font-semibold mb-2">Emotional Regulation</h3>
+                                <p class="text-sm opacity-70">Learning to understand and manage emotions</p>
+                            </div>
+                        </div>
+                        <div class="fade-in stagger-4">
+                            <div class="p-6 rounded-2xl h-full card-shadow card-hover"
+                                style="background: var(--color-surface);">
+                                <div class="w-14 h-14 rounded-xl mb-4 flex items-center justify-center"
+                                    style="background: rgba(107, 144, 128, 0.1);">
+                                    <svg class="w-7 h-7" style="color: var(--color-primary);" fill="none"
+                                        stroke="currentColor" viewbox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                                    </svg>
+                                </div>
+                                <h3 class="font-display text-lg font-semibold mb-2">Psycho-education</h3>
+                                <p class="text-sm opacity-70">Educational support for individuals and families</p>
+                            </div>
+                        </div>
+                        <div class="fade-in stagger-1">
+                            <div class="p-6 rounded-2xl h-full card-shadow card-hover"
+                                style="background: var(--color-surface);">
+                                <div class="w-14 h-14 rounded-xl mb-4 flex items-center justify-center"
+                                    style="background: rgba(107, 144, 128, 0.1);">
+                                    <svg class="w-7 h-7" style="color: var(--color-primary);" fill="none"
+                                        stroke="currentColor" viewbox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                                    </svg>
+                                </div>
+                                <h3 class="font-display text-lg font-semibold mb-2">Family Support</h3>
+                                <p class="text-sm opacity-70">Guidance and education for families</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-12 max-w-3xl mx-auto">
+                        <div class="p-6 rounded-2xl border-2 border-dashed"
+                            style="border-color: var(--color-secondary); background: rgba(107, 144, 128, 0.05);">
+                            <div class="flex items-start gap-4">
+                                <svg class="w-6 h-6 flex-shrink-0 mt-0.5" style="color: var(--color-primary);"
+                                    fill="none" stroke="currentColor" viewbox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                                <div>
+                                    <p class="text-sm font-medium mb-1">Important Note</p>
+                                    <p class="text-sm opacity-80">This is supportive psychological care focused on
+                                        emotional well-being. It is not a substitute for medical diagnosis or
+                                        medication. If you require psychiatric evaluation or medication management,
+                                        please consult a psychiatrist.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section><!-- Booking Section -->
+        <section id="section-booking" class="page-section" style="background: var(--color-surface);">
+            <div class="min-h-full py-24 pt-32">
+                <div class="max-w-6xl mx-auto px-6">
+                    <div class="text-center mb-16 fade-in"><span
+                            class="inline-block px-4 py-1.5 rounded-full text-sm font-medium mb-4"
+                            style="background: rgba(107, 144, 128, 0.1); color: var(--color-primary);"> Take the First
+                            Step </span>
+                        <h2 class="font-display text-3xl md:text-4xl font-bold">Book a Session</h2>
+                        <p class="mt-4 text-lg opacity-70 max-w-2xl mx-auto">If you feel ready, you can book a session
+                            at a time that works best for you. I'm here to support you on your journey.</p>
+                    </div>
+                    <div class="grid lg:grid-cols-2 gap-12"><!-- Calendar -->
+                        <div class="fade-in stagger-1">
+                            <div class="p-8 rounded-3xl card-shadow" style="background: var(--color-background);">
+                                <div class="flex items-center justify-between mb-6"><button id="prev-month"
+                                        class="p-2 rounded-lg hover:bg-white transition-colors">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M15 19l-7-7 7-7" />
+                                        </svg></button>
+                                    <h3 id="current-month" class="font-display text-xl font-semibold"></h3><button
+                                        id="next-month" class="p-2 rounded-lg hover:bg-white transition-colors">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M9 5l7 7-7 7" />
+                                        </svg></button>
+                                </div>
+                                <div class="grid grid-cols-7 gap-2 mb-4">
+                                    <div class="text-center text-sm font-medium opacity-50 py-2">
+                                        Sun
+                                    </div>
+                                    <div class="text-center text-sm font-medium opacity-50 py-2">
+                                        Mon
+                                    </div>
+                                    <div class="text-center text-sm font-medium opacity-50 py-2">
+                                        Tue
+                                    </div>
+                                    <div class="text-center text-sm font-medium opacity-50 py-2">
+                                        Wed
+                                    </div>
+                                    <div class="text-center text-sm font-medium opacity-50 py-2">
+                                        Thu
+                                    </div>
+                                    <div class="text-center text-sm font-medium opacity-50 py-2">
+                                        Fri
+                                    </div>
+                                    <div class="text-center text-sm font-medium opacity-50 py-2">
+                                        Sat
+                                    </div>
+                                </div>
+                                <div id="calendar-days" class="grid grid-cols-7 gap-2"></div><!-- Time Slots -->
+                                <div id="time-slots-container" class="mt-8 hidden">
+                                    <h4 class="font-display text-lg font-semibold mb-4">Available Time Slots</h4>
+                                    <div id="time-slots" class="grid grid-cols-3 gap-3"></div>
+                                </div>
+                            </div>
+                        </div><!-- Booking Form -->
+                        <div class="fade-in stagger-2">
+                            <form id="booking-form" class="p-8 rounded-3xl card-shadow"
+                                style="background: var(--color-background);">
+                                <h3 class="font-display text-xl font-semibold mb-6">Your Details</h3>
+                                <div class="space-y-5">
+                                    <div><label for="patient-name" class="block text-sm font-medium mb-2">Full Name
+                                            *</label> <input type="text" id="patient-name" required
+                                            class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 transition-all font-body"
+                                            style="background: var(--color-surface);"
+                                            placeholder="Enter your full name">
+                                    </div>
+                                    <div><label for="patient-email" class="block text-sm font-medium mb-2">Email Address
+                                            *</label> <input type="email" id="patient-email" required
+                                            class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 transition-all font-body"
+                                            style="background: var(--color-surface);" placeholder="your@email.com">
+                                    </div>
+                                    <div><label for="patient-phone" class="block text-sm font-medium mb-2">Phone Number
+                                            *</label> <input type="tel" id="patient-phone" required
+                                            class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 transition-all font-body"
+                                            style="background: var(--color-surface);" placeholder="+91 98765 43210">
+                                    </div>
+                                    <div><label for="patient-concern" class="block text-sm font-medium mb-2">What brings
+                                            you here today?</label> <select id="patient-concern"
+                                            class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 transition-all font-body"
+                                            style="background: var(--color-surface);">
+                                            <option value="">Select an area (optional)</option>
+                                            <option value="stress">Stress &amp; Overwhelm</option>
+                                            <option value="anxiety">Anxiety Support</option>
+                                            <option value="emotional">Emotional Well-being</option>
+                                            <option value="relationships">Relationship Issues</option>
+                                            <option value="sleep">Sleep &amp; Balance</option>
+                                            <option value="crisis">Crisis Support</option>
+                                            <option value="regulation">Emotional Regulation</option>
+                                            <option value="other">Other</option>
+                                        </select>
+                                    </div>
+                                    <div id="selected-datetime"
+                                        class="p-4 rounded-xl border-2 border-dashed border-gray-300 text-center">
+                                        <p class="text-sm opacity-70">Please select a date and time from the calendar
+                                        </p>
+                                    </div><button type="submit" id="submit-btn" disabled
+                                        class="w-full py-4 rounded-xl text-white font-semibold gradient-accent opacity-50 cursor-not-allowed transition-all">
+                                        <span id="submit-text">Book Session</span> <span id="submit-loading"
+                                            class="hidden">
+                                            <svg class="animate-spin h-5 w-5 mx-auto" fill="none" viewbox="0 0 24 24">
+                                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
+                                                    stroke-width="4" />
+                                                <path class="opacity-75" fill="currentColor"
+                                                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                                            </svg></span> </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section><!-- Toast Container -->
+        <div id="toast-container" class="fixed top-24 right-6 z-50 space-y-3"></div><!-- Chat Button --> <button
+            id="chat-button"
+            class="fixed bottom-6 right-6 w-16 h-16 rounded-full gradient-accent shadow-2xl flex items-center justify-center hover:scale-110 transition-transform z-50 group">
+            <svg id="chat-icon" class="w-7 h-7 text-white transition-transform group-hover:scale-110" fill="none"
+                stroke="currentColor" viewbox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+            </svg>
+            <svg id="close-icon" class="w-7 h-7 text-white hidden" fill="none" stroke="currentColor"
+                viewbox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            </svg></button> <!-- Chat Window -->
+        <div id="chat-window"
+            class="fixed bottom-24 right-6 w-96 h-[600px] rounded-3xl shadow-2xl hidden flex-col z-50 overflow-hidden"
+            style="background: var(--color-surface);"><!-- Chat Header -->
+            <div class="gradient-accent p-6 flex items-center gap-4">
+                <div class="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center backdrop-blur">
+                    <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+                    </svg>
+                </div>
+                <div class="flex-1">
+                    <h3 class="font-display text-lg font-semibold text-white">BrainLY</h3>
+                    <p class="text-sm text-white/80">Your Mental Health Companion</p>
+                </div>
+                <div class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></div>
+            </div><!-- Chat Messages -->
+            <div id="chat-messages" class="flex-1 overflow-y-auto p-6 space-y-4"
+                style="background: var(--color-background);"><!-- Welcome message will be added by JavaScript -->
+            </div><!-- Chat Input -->
+            <div class="p-4 border-t border-gray-200" style="background: var(--color-surface);">
+                <form id="chat-form" class="flex gap-2"><input type="text" id="chat-input"
+                        placeholder="Type your message..."
+                        class="flex-1 px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-[var(--color-primary)] transition-all font-body text-sm"
+                        style="background: var(--color-background);" autocomplete="off"> <button type="submit"
+                        class="px-5 py-3 rounded-xl gradient-accent text-white hover:opacity-90 transition-opacity flex items-center justify-center">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+                        </svg></button>
+                </form>
+                <p class="text-xs text-center mt-2 opacity-50">BrainLY provides support, not therapy</p>
+            </div>
+        </div><!-- Confirmation Modal -->
+        <div id="confirmation-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-6">
+            <div class="modal-backdrop absolute inset-0" onclick="closeModal()"></div>
+            <div class="relative bg-white rounded-3xl p-8 max-w-md w-full card-shadow">
+                <div class="text-center">
+                    <div class="w-20 h-20 rounded-full mx-auto mb-6 flex items-center justify-center"
+                        style="background: rgba(107, 144, 128, 0.1);">
+                        <svg class="w-10 h-10" style="color: var(--color-primary);" fill="none" stroke="currentColor"
+                            viewbox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                        </svg>
+                    </div>
+                    <h3 class="font-display text-2xl font-bold mb-2">Session Confirmed!</h3>
+                    <p class="text-gray-600 mb-6">Your session has been successfully booked. I'll send a confirmation to
+                        your email shortly.</p>
+                    <div id="modal-details" class="p-4 rounded-xl mb-6 text-left"
+                        style="background: var(--color-background);"></div><button onclick="closeModal()"
+                        class="w-full py-3 rounded-xl text-white font-semibold gradient-accent"> Done </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        // Configuration
+        const defaultConfig = {
+            doctor_name: 'Dr. Babanpreet Kaur',
+            doctor_title: 'Psychologist | Mental Health Support',
+            brand_name: 'Dr. BrainLy',
+            about_heading: 'About Me',
+            experience_years: 'Dedicated',
+            contact_email: 'contact@drbrainly.com',
+            contact_phone: '+91 98765 43210',
+            background_color: '#F8FAFB',
+            surface_color: '#FFFFFF',
+            text_color: '#2D3748',
+            primary_color: '#6B9080',
+            secondary_color: '#A4C3B2'
+        };
+
+        let config = { ...defaultConfig };
+        let appointments = [];
+        let selectedDate = null;
+        let selectedTime = null;
+        let currentMonth = new Date();
+        let recordCount = 0;
+        let chatHistory = [];
+
+        async function fetchAppointments() {
+            try {
+                const response = await fetch('/api/appointments');
+                if (response.ok) {
+                    appointments = await response.json();
+                    recordCount = appointments.length;
+                    renderCalendar();
+                    if (selectedDate) {
+                        renderTimeSlots();
+                    }
+                }
+            } catch (error) {
+                console.error('Failed to fetch appointments:', error);
+            }
+        }
+
+        // Time slots available
+        const timeSlots = [
+            '09:00 AM', '10:00 AM', '11:00 AM',
+            '02:00 PM', '03:00 PM', '04:00 PM',
+            '05:00 PM', '06:00 PM'
+        ];
+
+        // BrainLY AI Knowledge Base
+        const knowledgeBase = {
+            doctor: {
+                name: 'Dr. Babanpreet Kaur',
+                title: 'Psychologist',
+                qualifications: ['MSc in Psychology (GPA: 8.55)', 'BA Psychology (Honours)', 'Research in attachment and relationships'],
+                specializations: ['Stress & Overwhelm', 'Anxiety Support', 'Emotional Well-being', 'Relationship Issues', 'CBT', 'Supportive Therapy', 'Family Therapy']
+            },
+            mentalHealth: {
+                anxiety: ['stress', 'tension', 'ghabrahat', 'anxious', 'worried', 'dar', 'panic'],
+                depression: ['sad', 'udaas', 'hopeless', 'dukhi', 'heavy', 'mood down', 'depressed'],
+                sleep: ['neend', 'sleep', 'insomnia', 'rest', 'sona'],
+                overthinking: ['sochta', 'thinking', 'dimag', 'thoughts', 'mind'],
+                crisis: ['harm', 'suicide', 'die', 'khatam', 'disappear', 'end']
+            }
+        };
+
+        // Data Handler for appointments
+        const dataHandler = {
+            onDataChanged(data) {
+                appointments = data;
+                recordCount = data.length;
+                renderCalendar();
+                if (selectedDate) {
+                    renderTimeSlots();
+                }
+            }
+        };
+
+        // Element SDK Handler
+        const elementHandler = {
+            defaultConfig,
+            async onConfigChange(newConfig) {
+                config = { ...defaultConfig, ...newConfig };
+                updateUI();
+            },
+            mapToCapabilities(cfg) {
+                return {
+                    recolorables: [
+                        {
+                            get: () => cfg.background_color || defaultConfig.background_color,
+                            set: (v) => { cfg.background_color = v; window.elementSdk.setConfig({ background_color: v }); }
+                        },
+                        {
+                            get: () => cfg.surface_color || defaultConfig.surface_color,
+                            set: (v) => { cfg.surface_color = v; window.elementSdk.setConfig({ surface_color: v }); }
+                        },
+                        {
+                            get: () => cfg.text_color || defaultConfig.text_color,
+                            set: (v) => { cfg.text_color = v; window.elementSdk.setConfig({ text_color: v }); }
+                        },
+                        {
+                            get: () => cfg.primary_color || defaultConfig.primary_color,
+                            set: (v) => { cfg.primary_color = v; window.elementSdk.setConfig({ primary_color: v }); }
+                        },
+                        {
+                            get: () => cfg.secondary_color || defaultConfig.secondary_color,
+                            set: (v) => { cfg.secondary_color = v; window.elementSdk.setConfig({ secondary_color: v }); }
+                        }
+                    ],
+                    borderables: [],
+                    fontEditable: undefined,
+                    fontSizeable: undefined
+                };
+            },
+            mapToEditPanelValues(cfg) {
+                return new Map([
+                    ['doctor_name', cfg.doctor_name || defaultConfig.doctor_name],
+                    ['doctor_title', cfg.doctor_title || defaultConfig.doctor_title],
+                    ['brand_name', cfg.brand_name || defaultConfig.brand_name],
+                    ['about_heading', cfg.about_heading || defaultConfig.about_heading],
+                    ['experience_years', cfg.experience_years || defaultConfig.experience_years],
+                    ['contact_email', cfg.contact_email || defaultConfig.contact_email],
+                    ['contact_phone', cfg.contact_phone || defaultConfig.contact_phone]
+                ]);
+            }
+        };
+
+        // Update UI based on config
+        function updateUI() {
+            document.getElementById('hero-name').textContent = config.doctor_name || defaultConfig.doctor_name;
+            document.getElementById('hero-title').textContent = config.doctor_title || defaultConfig.doctor_title;
+            document.getElementById('hero-brand').textContent = config.brand_name || defaultConfig.brand_name;
+            document.getElementById('nav-brand').textContent = config.brand_name || defaultConfig.brand_name;
+            document.getElementById('about-heading').textContent = config.about_heading || defaultConfig.about_heading;
+            document.getElementById('hero-years').textContent = config.experience_years || defaultConfig.experience_years;
+
+            const root = document.documentElement;
+            root.style.setProperty('--color-background', config.background_color || defaultConfig.background_color);
+            root.style.setProperty('--color-surface', config.surface_color || defaultConfig.surface_color);
+            root.style.setProperty('--color-text', config.text_color || defaultConfig.text_color);
+            root.style.setProperty('--color-primary', config.primary_color || defaultConfig.primary_color);
+            root.style.setProperty('--color-secondary', config.secondary_color || defaultConfig.secondary_color);
+        }
+
+        // BrainLY Chatbot Functions
+        function detectLanguage(text) {
+            const hindiPattern = /[\u0900-\u097F]/;
+            const hindiWords = ['hai', 'hoon', 'kaise', 'kya', 'mujhe', 'aap', 'ho', 'ki', 'ka', 'ke'];
+
+            if (hindiPattern.test(text)) return 'hindi';
+            if (hindiWords.some(word => text.toLowerCase().includes(word))) return 'hinglish';
+            return 'english';
+        }
+
+        function detectIntent(message) {
+            const msg = message.toLowerCase();
+
+            // Crisis detection
+            if (knowledgeBase.mentalHealth.crisis.some(word => msg.includes(word))) {
+                return { type: 'crisis', severity: 'high' };
+            }
+
+            // Appointment booking
+            if (msg.includes('book') || msg.includes('appointment') || msg.includes('session') ||
+                msg.includes('slot') || msg.includes('time')) {
+                return { type: 'booking', severity: 'low' };
+            }
+
+            // Mental health concerns
+            if (knowledgeBase.mentalHealth.anxiety.some(word => msg.includes(word))) {
+                return { type: 'anxiety', severity: 'medium' };
+            }
+            if (knowledgeBase.mentalHealth.depression.some(word => msg.includes(word))) {
+                return { type: 'depression', severity: 'medium' };
+            }
+            if (knowledgeBase.mentalHealth.sleep.some(word => msg.includes(word))) {
+                return { type: 'sleep', severity: 'low' };
+            }
+            if (knowledgeBase.mentalHealth.overthinking.some(word => msg.includes(word))) {
+                return { type: 'overthinking', severity: 'low' };
+            }
+
+            // Doctor info
+            if (msg.includes('doctor') || msg.includes('dr') || msg.includes('qualification') ||
+                msg.includes('experience') || msg.includes('babanpreet')) {
+                return { type: 'doctor_info', severity: 'low' };
+            }
+
+            return { type: 'general', severity: 'low' };
+        }
+
+        function generateResponse(intent, language) {
+            const responses = {
+                crisis: {
+                    english: "I can hear that you're going through something really difficult right now. Your feelings are important, and I want you to know that you don't have to face this alone. Dr. Babanpreet Kaur provides compassionate emotional support. Would you like to book a session to speak with her? It's a safe, confidential space.",
+                    hindi: "मैं समझ सकता हूँ कि आप बहुत कठिन समय से गुजर रहे हैं। आपकी भावनाएं महत्वपूर्ण हैं। Dr. Babanpreet Kaur compassionate emotional support प्रदान करती हैं। क्या आप उनसे बात करना चाहेंगे? यह पूरी तरह सुरक्षित और गोपनीय है।",
+                    hinglish: "Main samajh sakta hoon ki aap mushkil samay se guzar rahe ho. Aapki feelings important hain. Dr. Babanpreet Kaur compassionate emotional support provide karti hain. Kya aap unse baat karna chahenge? Yeh completely safe aur confidential hai."
+                },
+                anxiety: {
+                    english: "It sounds like you're experiencing anxiety or stress. These feelings are valid and common. Dr. Babanpreet Kaur provides supportive care for anxiety-related concerns using approaches like CBT. Would you like to explore booking a session?",
+                    hindi: "लगता है आप चिंता या तनाव महसूस कर रहे हैं। ये भावनाएं बहुत आम हैं। Dr. Babanpreet Kaur anxiety-related concerns के लिए supportive care प्रदान करती हैं। क्या आप एक session book करना चाहेंगे?",
+                    hinglish: "Lagta hai aap anxiety ya stress feel kar rahe ho. Ye feelings valid aur common hain. Dr. Babanpreet Kaur anxiety-related concerns ke liye supportive care provide karti hain. Kya aap ek session book karna chahenge?"
+                },
+                depression: {
+                    english: "I understand you're feeling low right now. These feelings are difficult, but please know that support can help. Dr. Babanpreet Kaur provides compassionate emotional support. Would talking to her help?",
+                    hindi: "मैं समझता हूँ कि आप उदास महसूस कर रहे हैं। सही support से ये बेहतर हो सकता है। Dr. Babanpreet Kaur compassionate emotional support प्रदान करती हैं। क्या उनसे बात करने से मदद मिलेगी?",
+                    hinglish: "Main samajhta hoon ki aap udaas feel kar rahe ho. Sahi support se ye better ho sakta hai. Dr. Babanpreet Kaur compassionate emotional support provide karti hain. Kya unse baat karne se madad milegi?"
+                },
+                sleep: {
+                    english: "Sleep issues can affect your overall well-being. Dr. Babanpreet Kaur can help you explore better sleep and lifestyle balance. Would you like to book a session?",
+                    hindi: "नींद की समस्याएं आपकी well-being को प्रभावित करती हैं। Dr. Babanpreet Kaur आपको better sleep और lifestyle balance में मदद कर सकती हैं। क्या आप session book करना चाहेंगे?",
+                    hinglish: "Neend ki problems aapki well-being ko affect karti hain. Dr. Babanpreet Kaur aapko better sleep aur lifestyle balance mein madad kar sakti hain. Kya aap session book karna chahenge?"
+                },
+                overthinking: {
+                    english: "Overthinking can be exhausting. Learning to manage racing thoughts is possible with support. Dr. Babanpreet Kaur can help you with emotional regulation. Would you like to learn more?",
+                    hindi: "Overthinking बहुत थका देता है। सही support से इसे manage करना संभव है। Dr. Babanpreet Kaur emotional regulation में मदद कर सकती हैं। क्या आप और जानना चाहेंगे?",
+                    hinglish: "Overthinking bohot thaka deta hai. Sahi support se isse manage karna possible hai. Dr. Babanpreet Kaur emotional regulation mein madad kar sakti hain. Kya aap aur janna chahenge?"
+                },
+                booking: {
+                    english: "Great! Booking a session is simple. Just scroll to the 'Book a Session' section, select a date from the calendar (available Monday-Saturday), choose a time slot, and fill in your details. Would you like me to guide you there?",
+                    hindi: "बहुत अच्छे! Session book करना आसान है। बस 'Book a Session' section में जाएं, calendar से date select करें (Monday-Saturday available हैं), time slot चुनें, और अपनी details भरें। क्या मैं आपको वहां guide करूं?",
+                    hinglish: "Bahut accha! Session book karna simple hai. Bas 'Book a Session' section mein jao, calendar se date select karo (Monday-Saturday available hain), time slot choose karo, aur apni details bharo. Kya main aapko wahan guide karun?"
+                },
+                doctor_info: {
+                    english: `Dr. Babanpreet Kaur is a psychologist with an MSc in Psychology (GPA: 8.55) and BA Psychology (Honours). She has conducted research on attachment styles and relationships. She provides compassionate emotional support using approaches like CBT, Supportive Therapy, and Family Therapy. Her focus is on creating a safe, non-judgmental space for emotional well-being.`,
+                    hindi: `Dr. Babanpreet Kaur एक psychologist हैं जिन्होंने MSc in Psychology (GPA: 8.55) और BA Psychology (Honours) किया है। उन्होंने attachment styles और relationships पर research किया है। वे CBT, Supportive Therapy, और Family Therapy का उपयोग करती हैं। उनका focus एक safe, non-judgmental space बनाना है।`,
+                    hinglish: `Dr. Babanpreet Kaur ek psychologist hain jinhone MSc in Psychology (GPA: 8.55) aur BA Psychology (Honours) kiya hai. Unhone attachment styles aur relationships par research kiya hai. Wo CBT, Supportive Therapy, aur Family Therapy ka use karti hain. Unka focus ek safe, non-judgmental space banana hai.`
+                },
+                general: {
+                    english: "I'm here to help you with any questions about Dr. BrainLy's services or mental health support. You can ask me about booking sessions, Dr. Babanpreet Kaur's background, or share what's on your mind. How can I assist you today?",
+                    hindi: "मैं Dr. BrainLy की services या mental health support के बारे में आपकी मदद के लिए यहाँ हूँ। आप मुझसे sessions, Dr. Babanpreet Kaur की background के बारे में पूछ सकते हैं। मैं आज आपकी कैसे मदद कर सकता हूँ?",
+                    hinglish: "Main Dr. BrainLy ki services ya mental health support ke bare mein aapki madad ke liye yahan hoon. Aap mujhse sessions, Dr. Babanpreet Kaur ki background ke bare mein pooch sakte ho. Main aaj aapki kaise madad kar sakta hoon?"
+                }
+            };
+
+            return responses[intent.type][language];
+        }
+
+        function addChatMessage(message, isUser = false) {
+            const messagesContainer = document.getElementById('chat-messages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `chat-message flex ${isUser ? 'justify-end' : 'justify-start'}`;
+
+            const bubbleClass = isUser
+                ? 'bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-secondary)] text-white'
+                : 'bg-white border-2 border-gray-100';
+
+            messageDiv.innerHTML = `
+        <div class="${bubbleClass} px-4 py-3 rounded-2xl max-w-[80%] shadow-sm">
+          <p class="text-sm leading-relaxed">${message}</p>
+        </div>
+      `;
+
+            messagesContainer.appendChild(messageDiv);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+
+        function showTypingIndicator() {
+            const messagesContainer = document.getElementById('chat-messages');
+            const typingDiv = document.createElement('div');
+            typingDiv.id = 'typing-indicator';
+            typingDiv.className = 'flex justify-start';
+            typingDiv.innerHTML = `
+        <div class="bg-white border-2 border-gray-100 px-5 py-3 rounded-2xl shadow-sm">
+          <div class="typing-indicator flex gap-1">
+            <span class="w-2 h-2 bg-gray-400 rounded-full"></span>
+            <span class="w-2 h-2 bg-gray-400 rounded-full"></span>
+            <span class="w-2 h-2 bg-gray-400 rounded-full"></span>
+          </div>
+        </div>
+      `;
+            messagesContainer.appendChild(typingDiv);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+
+        function removeTypingIndicator() {
+            const indicator = document.getElementById('typing-indicator');
+            if (indicator) indicator.remove();
+        }
+
+        // Chat event handlers
+        document.getElementById('chat-button').addEventListener('click', () => {
+            const chatWindow = document.getElementById('chat-window');
+            const chatIcon = document.getElementById('chat-icon');
+            const closeIcon = document.getElementById('close-icon');
+
+            if (chatWindow.classList.contains('hidden')) {
+                chatWindow.classList.remove('hidden');
+                chatWindow.classList.add('flex');
+                chatIcon.classList.add('hidden');
+                closeIcon.classList.remove('hidden');
+
+                // Add welcome message if first time
+                if (chatHistory.length === 0) {
+                    setTimeout(() => {
+                        addChatMessage("Namaste! 🙏 I'm BrainLY, your mental health companion. Main yahan aapki madad ke liye hoon. Aap mujhse Hindi, English ya Hinglish mein baat kar sakte hain. How can I support you today?");
+                    }, 300);
+                }
+            } else {
+                chatWindow.classList.add('hidden');
+                chatWindow.classList.remove('flex');
+                chatIcon.classList.remove('hidden');
+                closeIcon.classList.add('hidden');
+            }
+        });
+
+        document.getElementById('chat-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const input = document.getElementById('chat-input');
+            const message = input.value.trim();
+
+            if (!message) return;
+
+            // Add user message
+            addChatMessage(message, true);
+            chatHistory.push({ role: 'user', message });
+            input.value = '';
+
+            // Show typing indicator
+            showTypingIndicator();
+
+            // Simulate processing time
+            await new Promise(resolve => setTimeout(resolve, 1000 + Math.random() * 1000));
+
+            // Detect language and intent
+            const language = detectLanguage(message);
+            const intent = detectIntent(message);
+
+            // Generate response
+            const response = generateResponse(intent, language);
+
+            // Remove typing indicator and show response
+            removeTypingIndicator();
+            addChatMessage(response);
+            chatHistory.push({ role: 'assistant', message: response });
+
+            // If booking intent, offer to navigate
+            if (intent.type === 'booking') {
+                setTimeout(() => {
+                    const followUp = language === 'hindi'
+                        ? 'क्या मैं आपको booking page पर ले जाऊं?'
+                        : language === 'hinglish'
+                            ? 'Kya main aapko booking page par le jaun?'
+                            : 'Would you like me to take you to the booking page?';
+                    addChatMessage(followUp);
+                }, 1500);
+            }
+        });
+
+        // Calendar functions
+        function renderCalendar() {
+            const calendarDays = document.getElementById('calendar-days');
+            const currentMonthEl = document.getElementById('current-month');
+
+            const year = currentMonth.getFullYear();
+            const month = currentMonth.getMonth();
+
+            currentMonthEl.textContent = new Date(year, month).toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+
+            const firstDay = new Date(year, month, 1).getDay();
+            const daysInMonth = new Date(year, month + 1, 0).getDate();
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+
+            calendarDays.innerHTML = '';
+
+            for (let i = 0; i < firstDay; i++) {
+                const emptyCell = document.createElement('div');
+                emptyCell.className = 'p-2';
+                calendarDays.appendChild(emptyCell);
+            }
+
+            for (let day = 1; day <= daysInMonth; day++) {
+                const date = new Date(year, month, day);
+                const dateStr = date.toISOString().split('T')[0];
+                const isPast = date < today;
+                const isSunday = date.getDay() === 0;
+                const isSelected = selectedDate === dateStr;
+
+                const dayCell = document.createElement('button');
+                dayCell.type = 'button';
+                dayCell.textContent = day;
+                dayCell.className = `calendar-day p-2 rounded-lg text-center font-medium transition-all ${isPast || isSunday ? 'disabled opacity-30 cursor-not-allowed' : 'cursor-pointer hover:bg-[var(--color-primary)] hover:text-white'
+                    } ${isSelected ? 'bg-[var(--color-primary)] text-white' : ''}`;
+
+                if (!isPast && !isSunday) {
+                    dayCell.onclick = () => selectDate(dateStr);
+                }
+
+                calendarDays.appendChild(dayCell);
+            }
+        }
+
+        function selectDate(dateStr) {
+            selectedDate = dateStr;
+            selectedTime = null;
+            renderCalendar();
+            renderTimeSlots();
+            updateSelectedDateTime();
+        }
+
+        function renderTimeSlots() {
+            const container = document.getElementById('time-slots-container');
+            const slotsEl = document.getElementById('time-slots');
+
+            if (!selectedDate) {
+                container.classList.add('hidden');
+                return;
+            }
+
+            container.classList.remove('hidden');
+            slotsEl.innerHTML = '';
+
+            const bookedSlots = appointments
+                .filter(apt => apt.appointment_date === selectedDate)
+                .map(apt => apt.appointment_time);
+
+            const now = new Date();
+            const istOffset = 5.5 * 60 * 60 * 1000;
+            const istNow = new Date(now.getTime() + istOffset);
+
+            const todayYear = istNow.getUTCFullYear();
+            const todayMonth = String(istNow.getUTCMonth() + 1).padStart(2, '0');
+            const todayDay = String(istNow.getUTCDate()).padStart(2, '0');
+            const todayStr = `${todayYear}-${todayMonth}-${todayDay}`;
+
+            const isToday = selectedDate === todayStr;
+            const currentHourIST = istNow.getUTCHours();
+            const currentMinuteIST = istNow.getUTCMinutes();
+
+            timeSlots.forEach(slot => {
+                const isBooked = bookedSlots.includes(slot);
+                const isSelected = selectedTime === slot;
+
+                let isPast = false;
+                if (isToday) {
+                    const [time, period] = slot.split(' ');
+                    const [hours, minutes] = time.split(':').map(Number);
+                    let slotHour = hours;
+
+                    if (period === 'PM' && hours !== 12) {
+                        slotHour = hours + 12;
+                    } else if (period === 'AM' && hours === 12) {
+                        slotHour = 0;
+                    }
+
+                    if (slotHour < currentHourIST || (slotHour === currentHourIST && minutes <= currentMinuteIST)) {
+                        isPast = true;
+                    }
+                }
+
+                const isUnavailable = isBooked || isPast;
+
+                const slotBtn = document.createElement('button');
+                slotBtn.type = 'button';
+                slotBtn.textContent = slot;
+                slotBtn.className = `time-slot px-4 py-3 rounded-xl border-2 text-sm font-medium transition-all ${isUnavailable
+                    ? 'booked bg-gray-100 border-gray-200 text-gray-400 cursor-not-allowed line-through'
+                    : isSelected
+                        ? 'bg-[var(--color-primary)] border-[var(--color-primary)] text-white'
+                        : 'border-gray-200 hover:border-[var(--color-primary)] cursor-pointer'
+                    }`;
+
+                if (!isUnavailable) {
+                    slotBtn.onclick = () => selectTime(slot);
+                }
+
+                slotsEl.appendChild(slotBtn);
+            });
+        }
+
+        function selectTime(time) {
+            selectedTime = time;
+            renderTimeSlots();
+            updateSelectedDateTime();
+        }
+
+        function updateSelectedDateTime() {
+            const el = document.getElementById('selected-datetime');
+            const submitBtn = document.getElementById('submit-btn');
+
+            if (selectedDate && selectedTime) {
+                const formattedDate = new Date(selectedDate + 'T00:00:00').toLocaleDateString('en-US', {
+                    weekday: 'long',
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                });
+
+                el.innerHTML = `
+          <div class="flex items-center justify-center gap-4">
+            <div class="flex items-center gap-2">
+              <svg class="w-5 h-5" style="color: var(--color-primary);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+              </svg>
+              <span class="font-medium">${formattedDate}</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <svg class="w-5 h-5" style="color: var(--color-primary);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+              </svg>
+              <span class="font-medium">${selectedTime}</span>
+            </div>
+          </div>
+        `;
+                el.className = 'p-4 rounded-xl border-2 text-center';
+                el.style.borderColor = 'var(--color-primary)';
+                el.style.background = 'rgba(107, 144, 128, 0.05)';
+
+                submitBtn.disabled = false;
+                submitBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+                submitBtn.classList.add('hover:opacity-90', 'cursor-pointer');
+            } else {
+                el.innerHTML = '<p class="text-sm opacity-70">Please select a date and time from the calendar</p>';
+                el.className = 'p-4 rounded-xl border-2 border-dashed border-gray-300 text-center';
+                el.style.background = 'transparent';
+
+                submitBtn.disabled = true;
+                submitBtn.classList.add('opacity-50', 'cursor-not-allowed');
+                submitBtn.classList.remove('hover:opacity-90', 'cursor-pointer');
+            }
+        }
+
+        // Form submission
+        // Form submission
+        document.getElementById('booking-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            // Refresh appointments before checking availability
+            await fetchAppointments();
+
+            const name = document.getElementById('patient-name').value.trim();
+            const email = document.getElementById('patient-email').value.trim();
+            const phone = document.getElementById('patient-phone').value.trim();
+            const concern = document.getElementById('patient-concern').value;
+
+            if (!name || !email || !phone || !selectedDate || !selectedTime) {
+                showToast('Please fill in all required fields', 'error');
+                return;
+            }
+
+            const isSlotTaken = appointments.some(
+                apt => apt.appointment_date === selectedDate && apt.appointment_time === selectedTime
+            );
+
+            if (isSlotTaken) {
+                showToast('This time slot was just booked. Please select another.', 'error');
+                renderTimeSlots();
+                return;
+            }
+
+            const submitBtn = document.getElementById('submit-btn');
+            const submitText = document.getElementById('submit-text');
+            const submitLoading = document.getElementById('submit-loading');
+
+            submitBtn.disabled = true;
+            submitText.classList.add('hidden');
+            submitLoading.classList.remove('hidden');
+
+            try {
+                const response = await fetch('/api/appointments', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        patientName: name,
+                        patientEmail: email,
+                        patientPhone: phone,
+                        appointment_date: selectedDate,
+                        appointment_time: selectedTime,
+                        concern: concern || 'Not specified'
+                    })
+                });
+
+                if (response.ok) {
+                    const savedAppointment = await response.json();
+                    // Update local state
+                    appointments.push(savedAppointment);
+
+                    showConfirmationModal({
+                        name,
+                        email,
+                        date: selectedDate,
+                        time: selectedTime
+                    });
+
+                    document.getElementById('booking-form').reset();
+                    selectedDate = null;
+                    selectedTime = null;
+                    document.getElementById('time-slots-container').classList.add('hidden');
+                    updateSelectedDateTime();
+                    renderCalendar();
+                } else {
+                    const errorData = await response.json();
+                    showToast(errorData.error || 'Failed to book session. Please try again.', 'error');
+                }
+            } catch (error) {
+                console.error(error);
+                showToast('An error occurred. Please try again.', 'error');
+            }
+
+            submitText.classList.remove('hidden');
+            submitLoading.classList.add('hidden');
+            submitBtn.disabled = false;
+        });
+
+        function showToast(message, type = 'success') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = `toast px-6 py-4 rounded-xl shadow-lg flex items-center gap-3 ${type === 'error' ? 'bg-red-500' : 'bg-[var(--color-primary)]'
+                } text-white`;
+
+            toast.innerHTML = `
+        <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          ${type === 'error'
+                    ? '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>'
+                    : '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>'
+                }
+        </svg>
+        <span class="font-medium">${message}</span>
+      `;
+
+            container.appendChild(toast);
+
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transform = 'translateX(100%)';
+                toast.style.transition = 'all 0.3s ease';
+                setTimeout(() => toast.remove(), 300);
+            }, 4000);
+        }
+
+        function showConfirmationModal(details) {
+            const modal = document.getElementById('confirmation-modal');
+            const modalDetails = document.getElementById('modal-details');
+
+            const formattedDate = new Date(details.date + 'T00:00:00').toLocaleDateString('en-US', {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+
+            modalDetails.innerHTML = `
+        <div class="space-y-2 text-sm">
+          <p><span class="font-medium">Name:</span> ${details.name}</p>
+          <p><span class="font-medium">Email:</span> ${details.email}</p>
+          <p><span class="font-medium">Date:</span> ${formattedDate}</p>
+          <p><span class="font-medium">Time:</span> ${details.time}</p>
+        </div>
+      `;
+
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('confirmation-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        }
+
+        document.getElementById('mobile-menu-btn').addEventListener('click', toggleMobileMenu);
+
+        function showSection(sectionName) {
+            const sections = document.querySelectorAll('.page-section');
+            sections.forEach(section => {
+                section.classList.remove('active');
+            });
+
+            const targetSection = document.getElementById(`section-${sectionName}`);
+            if (targetSection) {
+                targetSection.classList.add('active');
+                targetSection.scrollTop = 0;
+            }
+        }
+
+        window.showSection = showSection;
+        window.toggleMobileMenu = toggleMobileMenu;
+        window.closeModal = closeModal;
+
+        document.getElementById('prev-month').addEventListener('click', () => {
+            currentMonth.setMonth(currentMonth.getMonth() - 1);
+            renderCalendar();
+        });
+
+        document.getElementById('next-month').addEventListener('click', () => {
+            currentMonth.setMonth(currentMonth.getMonth() + 1);
+            renderCalendar();
+        });
+
+        // Initialize SDKs
+        // Initialize SDKs
+        async function init() {
+            // Initialize config (use defaults since SDKs are removed)
+            updateUI();
+
+            // Fetch appointments from custom backend
+            await fetchAppointments();
+        }
+
+        // Loading Screen Animation
+        function startLoadingAnimation() {
+            const text = "Dr. BrainLY";
+            const lettersContainer = document.getElementById('loading-letters');
+            const cursor = document.getElementById('loading-cursor');
+            const progressBar = document.getElementById('loading-progress');
+            const loadingScreen = document.getElementById('loading-screen');
+
+            let currentIndex = 0;
+            const letterDelay = 200;
+            const totalDuration = 4000;
+
+            const typeInterval = setInterval(() => {
+                if (currentIndex < text.length) {
+                    lettersContainer.textContent += text[currentIndex];
+                    currentIndex++;
+                } else {
+                    clearInterval(typeInterval);
+                    setTimeout(() => {
+                        cursor.style.opacity = '0';
+                    }, 500);
+                }
+            }, letterDelay);
+
+            const progressInterval = setInterval(() => {
+                const currentWidth = parseFloat(progressBar.style.width) || 0;
+                if (currentWidth < 100) {
+                    progressBar.style.width = Math.min(currentWidth + 2, 100) + '%';
+                }
+            }, totalDuration / 50);
+
+            setTimeout(() => {
+                clearInterval(progressInterval);
+                progressBar.style.width = '100%';
+
+                setTimeout(() => {
+                    loadingScreen.style.opacity = '0';
+                    loadingScreen.style.transition = 'opacity 0.5s ease';
+
+                    setTimeout(() => {
+                        loadingScreen.remove();
+                    }, 500);
+                }, 200);
+            }, totalDuration);
+        }
+
+        startLoadingAnimation();
+        init();
+    </script>
+    <script>(function () { function c() { var b = a.contentDocument || a.contentWindow.document; if (b) { var d = b.createElement('script'); d.innerHTML = "window.__CF$cv$params={r:'9beebd8760281f68',t:'MTc2ODU3ODMzMS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);"; b.getElementsByTagName('head')[0].appendChild(d) } } if (document.body) { var a = document.createElement('iframe'); a.height = 1; a.width = 1; a.style.position = 'absolute'; a.style.top = 0; a.style.left = 0; a.style.border = 'none'; a.style.visibility = 'hidden'; document.body.appendChild(a); if ('loading' !== document.readyState) c(); else if (window.addEventListener) document.addEventListener('DOMContentLoaded', c); else { var e = document.onreadystatechange || function () { }; document.onreadystatechange = function (b) { e(b); 'loading' !== document.readyState && (document.onreadystatechange = e, c()) } } } })();</script>
+</body>
+
+</html>
