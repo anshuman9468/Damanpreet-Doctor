@@ -21,18 +21,55 @@ app.use(express.json());
 // Serve static files from the current directory (so index.html is accessible)
 app.use(express.static('.'));
 
-const DATA_FILE = path.join(__dirname, 'appointments.json');
+// Root route - serve index.html
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'index.html'));
+});
 
-// Initialize data file if it doesn't exist
-if (!fs.existsSync(DATA_FILE)) {
-    fs.writeFileSync(DATA_FILE, JSON.stringify([]));
+// Explicit route for doctor image to ensure it's served correctly
+app.get('/doctor_image.png', (req, res) => {
+    res.setHeader('Content-Type', 'image/png');
+    res.setHeader('Cache-Control', 'public, max-age=31536000');
+    res.sendFile(path.join(__dirname, 'doctor_image.png'), (err) => {
+        if (err) {
+            console.error('Error serving doctor_image.png:', err);
+            res.status(404).send('Image not found');
+        }
+    });
+});
+
+const DATA_FILE = path.join(__dirname, 'appointments.json');
+const IS_VERCEL = process.env.VERCEL === '1';
+
+// In-memory storage for Vercel (read-only filesystem)
+let inMemoryAppointments = [];
+
+// Initialize data file if it doesn't exist (only for local development)
+if (!IS_VERCEL) {
+    if (!fs.existsSync(DATA_FILE)) {
+        fs.writeFileSync(DATA_FILE, JSON.stringify([]));
+    }
+    // Load existing appointments from file
+    try {
+        const data = fs.readFileSync(DATA_FILE);
+        inMemoryAppointments = JSON.parse(data);
+    } catch (error) {
+        inMemoryAppointments = [];
+    }
 }
 
 // Get all appointments
 app.get('/api/appointments', (req, res) => {
     try {
-        const data = fs.readFileSync(DATA_FILE);
-        const appointments = JSON.parse(data);
+        let appointments;
+        if (IS_VERCEL) {
+            // Use in-memory storage on Vercel
+            appointments = inMemoryAppointments;
+        } else {
+            // Use file storage locally
+            const data = fs.readFileSync(DATA_FILE);
+            appointments = JSON.parse(data);
+        }
         res.json(appointments);
     } catch (error) {
         console.error('Error reading appointments:', error);
@@ -43,15 +80,27 @@ app.get('/api/appointments', (req, res) => {
 // Book an appointment
 app.post('/api/appointments', async (req, res) => {
     try {
-        const { appointment_date, appointment_time, patientName, patientEmail, patientPhone, concern } = req.body;
+        const { appointment_date, appointment_time, patientName, patientEmail, patientPhone, patientAdhaar, concern } = req.body;
 
         // Validation matches the frontend's expected payload
         if (!appointment_date || !appointment_time || !patientName) {
             return res.status(400).json({ error: 'Missing required fields' });
         }
 
-        const data = fs.readFileSync(DATA_FILE);
-        const appointments = JSON.parse(data);
+        // Get appointments from appropriate storage
+        let appointments;
+        if (IS_VERCEL) {
+            // Use in-memory storage on Vercel
+            appointments = inMemoryAppointments;
+        } else {
+            // Use file storage locally
+            try {
+                const data = fs.readFileSync(DATA_FILE);
+                appointments = JSON.parse(data);
+            } catch (error) {
+                appointments = [];
+            }
+        }
 
         // Check if slot is already taken
         const isTaken = appointments.some(appt =>
@@ -70,12 +119,26 @@ app.post('/api/appointments', async (req, res) => {
             patientName,
             patientEmail,
             patientPhone,
+            patientAdhaar, // Added adhaar
             concern,
             createdAt: new Date().toISOString()
         };
 
         appointments.push(newAppointment);
-        fs.writeFileSync(DATA_FILE, JSON.stringify(appointments, null, 2));
+
+        // Save to appropriate storage
+        if (IS_VERCEL) {
+            // Update in-memory storage on Vercel
+            inMemoryAppointments = appointments;
+        } else {
+            // Save to file locally
+            try {
+                fs.writeFileSync(DATA_FILE, JSON.stringify(appointments, null, 2));
+            } catch (error) {
+                console.error('Failed to write to file, using in-memory storage:', error);
+                inMemoryAppointments = appointments;
+            }
+        }
 
         console.log(`New appointment booked: ${appointment_date} at ${appointment_time} for ${patientName}`);
 
@@ -95,7 +158,7 @@ app.post('/api/appointments', async (req, res) => {
             // 2. Select "Mail" and "Other (Custom name)" 
             // 3. Enter a name like "Doctor Appointments"
             // 4. Copy the 16-character password and use it in .env as EMAIL_PASS
-            
+
             const transporter = nodemailer.createTransport({
                 service: env.EMAIL_SERVICE || 'gmail',
                 auth: {
@@ -140,6 +203,7 @@ Name: ${patientName}
 Date: ${appointment_date}
 Time: ${appointment_time}
 Phone: ${patientPhone || 'N/A'}
+Aadhaar: ${patientAdhaar || 'N/A'}
 Email: ${patientEmail || 'N/A'}
 Concern: ${concern || 'N/A'}
 
@@ -152,6 +216,7 @@ ${JSON.stringify(newAppointment, null, 2)}
                     <p><strong>Date:</strong> ${appointment_date}</p>
                     <p><strong>Time:</strong> ${appointment_time}</p>
                     <p><strong>Phone:</strong> ${patientPhone || 'N/A'}</p>
+                    <p><strong>Aadhaar:</strong> ${patientAdhaar || 'N/A'}</p>
                     <p><strong>Email:</strong> ${patientEmail || 'N/A'}</p>
                     <p><strong>Concern:</strong> ${concern || 'N/A'}</p>
                     <br/>
@@ -192,11 +257,11 @@ Your Appointment is fixed with us on-:
 Date: ${appointment_date}
 Time: ${appointment_time}
 ${patientPhone ? `Phone: ${patientPhone}` : ''}
+${patientAdhaar ? `Aadhaar: ${patientAdhaar}` : ''}
 ${concern ? `Concern: ${concern}` : ''}
 
-I am happy to coordinate with you. Please send me "Hi, I had made a session booked regarding ${concern || 'your therapy session'}."
-
-Happy to Assist you!!
+I am happy to coordinate with you. Please send me "Hi, I had made a session booked regarding ${concern || 'your therapy session'}." on this whatsapp number-: 
++91 95604 76606
                     `,
                     html: `
                         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
@@ -207,11 +272,13 @@ Happy to Assist you!!
                                 <p style="margin: 10px 0;"><strong>Date:</strong> ${appointment_date}</p>
                                 <p style="margin: 10px 0;"><strong>Time:</strong> ${appointment_time}</p>
                                 ${patientPhone ? `<p style="margin: 10px 0;"><strong>Phone:</strong> ${patientPhone}</p>` : ''}
+                                ${patientAdhaar ? `<p style="margin: 10px 0;"><strong>Aadhaar:</strong> ${patientAdhaar}</p>` : ''}
                                 ${concern ? `<p style="margin: 10px 0;"><strong>Concern:</strong> ${concern}</p>` : ''}
                             </div>
                             
                             <p style="font-size: 16px; color: #34495e; margin-top: 20px;">
-                                I am happy to coordinate with you. Please send me "Hi, I had made a session booked regarding ${concern || 'your therapy session'}."
+                                I am happy to coordinate with you. Please send me "Hi, I had made a session booked regarding ${concern || 'your therapy session'}." on this whatsapp number-: <br>
+                                <strong>+91 95604 76606</strong>
                             </p>
                             
                             <p style="font-size: 16px; color: #2c3e50; font-weight: bold; margin-top: 20px;">
