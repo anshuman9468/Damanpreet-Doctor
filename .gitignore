@@ -1,1 +1,7 @@
 .vercel
+node_modules
+.env
+appointments.json
+test-email.js
+*.log
+.DS_Store

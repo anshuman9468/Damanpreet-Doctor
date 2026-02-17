@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dr. BrainLy | Psychology &amp; Mental Wellness</title>
+    <title>The Therapy Room | Psychology &amp; Mental Wellness</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- SDKs removed as they are not available -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -296,13 +296,10 @@
             <div class="max-w-6xl mx-auto px-6 py-4">
                 <div class="flex items-center justify-between"><button onclick="showSection('hero')"
                         class="flex items-center gap-3 hover:opacity-80 transition-opacity">
-                        <div class="w-10 h-10 rounded-xl gradient-accent flex items-center justify-center">
-                            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewbox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-                            </svg>
+                        <div class="w-10 h-10 rounded-xl overflow-hidden flex items-center justify-center">
+                            <img src="therapy_room_logo.png" alt="The Therapy Room" class="w-full h-full object-cover">
                         </div><span id="nav-brand" class="font-display text-xl font-semibold"
-                            style="color: var(--color-primary);">Dr. BrainLy</span>
+                            style="color: var(--color-primary);">The Therapy Room</span>
                     </button>
                     <div class="hidden md:flex items-center gap-8"><button onclick="showSection('about')"
                             class="nav-link font-medium text-sm tracking-wide hover:text-[#6B9080] transition-colors">About</button>
@@ -349,7 +346,7 @@
                         <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6"
                             style="background: rgba(107, 144, 128, 0.1);"><span class="w-2 h-2 rounded-full"
                                 style="background: var(--color-primary);"></span> <span id="hero-brand"
-                                class="text-sm font-medium" style="color: var(--color-primary);">Dr. BrainLy</span>
+                                class="text-sm font-medium" style="color: var(--color-primary);">The Therapy Room</span>
                         </div>
                         <h1 id="hero-name"
                             class="font-display text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-4">
@@ -1112,7 +1109,7 @@
         const defaultConfig = {
             doctor_name: 'Babanpreet Kaur',
             doctor_title: 'Psychologist | Mental Health Support',
-            brand_name: 'Dr. BrainLy',
+            brand_name: 'The Therapy Room',
             about_heading: 'About Me',
             experience_years: '3+ Years',
             contact_email: 'contact@drbrainly.com',
@@ -1335,9 +1332,9 @@
                     hinglish: `Babanpreet Kaur ek psychologist hain jinhone MSc in Psychology aur BA Psychology (Honours) kiya hai. Unhone attachment styles aur relationships par research kiya hai. Wo CBT, Supportive Therapy, aur Family Therapy ka use karti hain. Unka focus ek safe, non-judgmental space banana hai.`
                 },
                 general: {
-                    english: "I'm here to help you with any questions about Dr. BrainLy's services or mental health support. You can ask me about booking sessions, Babanpreet Kaur's background, or share what's on your mind. How can I assist you today?",
-                    hindi: "मैं Dr. BrainLy की services या mental health support के बारे में आपकी मदद के लिए यहाँ हूँ। आप मुझसे sessions, Babanpreet Kaur की background के बारे में पूछ सकते हैं। मैं आज आपकी कैसे मदद कर सकता हूँ?",
-                    hinglish: "Main Dr. BrainLy ki services ya mental health support ke bare mein aapki madad ke liye yahan hoon. Aap mujhse sessions, Babanpreet Kaur ki background ke bare mein pooch sakte ho. Main aaj aapki kaise madad kar sakta hoon?"
+                    english: "I'm here to help you with any questions about The Therapy Room's services or mental health support. You can ask me about booking sessions, Babanpreet Kaur's background, or share what's on your mind. How can I assist you today?",
+                    hindi: "मैं The Therapy Room की services या mental health support के बारे में आपकी मदद के लिए यहाँ हूँ। आप मुझसे sessions, Babanpreet Kaur की background के बारे में पूछ सकते हैं। मैं आज आपकी कैसे मदद कर सकता हूँ?",
+                    hinglish: "Main The Therapy Room ki services ya mental health support ke bare mein aapki madad ke liye yahan hoon. Aap mujhse sessions, Babanpreet Kaur ki background ke bare mein pooch sakte ho. Main aaj aapki kaise madad kar sakta hoon?"
                 }
             };
 
@@ -1839,7 +1836,7 @@
 
         // Loading Screen Animation
         function startLoadingAnimation() {
-            const text = "Dr. BrainLY";
+            const text = "The Therapy Room";
             const lettersContainer = document.getElementById('loading-letters');
             const cursor = document.getElementById('loading-cursor');
             const progressBar = document.getElementById('loading-progress');
